@@ -5,7 +5,7 @@ setuptools.setup(
     version='0.1.0',
     packages=['everpay',],
     license='MIT',
-    description = 'Python wrappers for everpay.io',
+    description = 'Python wrappers for everpay.io api',
     long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
     author = 'xiaojay',

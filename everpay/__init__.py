@@ -12,16 +12,21 @@ class Everpay:
         url = get_url(self.api_server, '/info')
         return requests.get(url).json()
     
-    def get_balance(self, account, chain_type, chain_id, token_symbol, token_id=''):
-        token_tag = get_token_tag(chain_type, chain_id, token_symbol, token_id='')
-        path = '/balanceOf/%s/%s'%(token_tag, account.lower())        
+    def get_balance(self, account, chain_type='', chain_id='', token_symbol='', token_id=''):
+        if chain_type and chain_id and token_symbol and token_id:
+            token_tag = get_token_tag(chain_type, chain_id, token_symbol, token_id='')
+            path = '/balanceOf/%s/%s'%(token_tag, account.lower())
+        else:
+            path = '/balances/%s'%account.lower()
         url = get_url(self.api_server, path)
         return requests.get(url).json()
 
-    def get_txs(self, account=''):
+    def get_txs(self, account='', hash=''):
         path = '/txs'
         if account:
             path = '/txs/%s'%account
+        if hash:
+            path = '/txs/%s'%hash
         url = get_url(self.api_server, path)
         return requests.get(url).json()
 

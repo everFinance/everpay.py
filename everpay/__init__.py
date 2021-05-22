@@ -42,14 +42,14 @@ class Account:
     def get_txs(self):
         return self.everpay.get_txs(self.address)
     
-    def transfer(self, to, amount, chain_type, chain_id, token_symbol, token_id=''):
+    def transfer(self, to, amount, chain_type, chain_id, token_symbol, token_id='', data=''):
         if not token_id:
             token_id = get_token_id(chain_type, chain_id, token_symbol)
         decimal = get_token_decimal(chain_type, chain_id, token_symbol)
         amount_ = str(int(Decimal(str(amount)) * 10**decimal))
         t = Transaction(tx_id='', token_symbol=token_symbol, action='transfer', from_=self.address, to=to, 
                          amount=amount_, fee='0', fee_recipient='', nonce=str(int(time.time() * 1000)), 
-                         token_id=token_id, chain_type=chain_type, chain_id=chain_id, data='', version='v1')
+                         token_id=token_id, chain_type=chain_type, chain_id=chain_id, data=data, version='v1')
         t.sign(self.private_key)
         return t.post(self.everpay.api_server).content
 

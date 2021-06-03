@@ -1,6 +1,6 @@
 import requests
 from web3.auto import w3
-from eth_account.messages import encode_defunct
+from eth_account.messages import encode_defunct, _hash_eip191_message
 
 class Transaction:
     def __init__(self, tx_id, token_symbol, action, from_, to, amount, fee, fee_recipient, nonce, token_id, chain_type, chain_id, data, version):
@@ -38,11 +38,15 @@ class Transaction:
     def sign(self, private_key):
         pk = bytearray.fromhex(private_key)
         message = encode_defunct(text=str(self))
-
         sig = w3.eth.account.sign_message(message, private_key=pk)
         self.sig = sig.signature.hex()
         return sig
 
+    def get_ever_hash(self):
+        message = encode_defunct(text=str(self))
+        message_hash = _hash_eip191_message(message)
+        return w3.toHex(message_hash)
+        
     def to_dict(self):
         return {
             'tx_id': self.tx_id,

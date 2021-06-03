@@ -37,12 +37,20 @@ class Account:
         self.private_key = private_key
     
     def get_balance(self, chain_type, chain_id, token_symbol, token_id=''):
+        chain_type = chain_type.lower()
+        chain_id = str(chain_id).lower()
+        token_symbol = token_symbol.lower()
+
         return self.everpay.get_balance(self.address, chain_type, chain_id, token_symbol, token_id='')
     
     def get_txs(self):
         return self.everpay.get_txs(self.address)
     
     def transfer(self, to, amount, chain_type, chain_id, token_symbol, token_id='', data=''):
+        chain_type = chain_type.lower()
+        chain_id = str(chain_id).lower()
+        token_symbol = token_symbol.lower()
+
         if not token_id:
             token_id = get_token_id(chain_type, chain_id, token_symbol)
         #decimal = get_token_decimal(chain_type, chain_id, token_symbol)

@@ -27,4 +27,3 @@ def get_token_tag(chain_type, chain_id, token_symbol, token_id=''):
         token_id = get_token_id(chain_type, chain_id, token_symbol)
 
     return '-'.join([chain_type, token_symbol, token_id])
-

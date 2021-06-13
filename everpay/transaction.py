@@ -19,6 +19,7 @@ class Transaction:
         self.data = data
         self.version = version
         self.sig = ''
+        self.ever_hash = self.get_ever_hash()
 
     def __str__(self):
         return 'tokenSymbol:' + self.token_symbol + '\n' + \
@@ -41,12 +42,12 @@ class Transaction:
         sig = w3.eth.account.sign_message(message, private_key=pk)
         self.sig = sig.signature.hex()
         return sig
-
+    
     def get_ever_hash(self):
         message = encode_defunct(text=str(self))
         message_hash = _hash_eip191_message(message)
         return w3.toHex(message_hash)
-        
+
     def to_dict(self):
         return {
             'tx_id': self.tx_id,

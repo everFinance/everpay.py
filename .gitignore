@@ -129,4 +129,6 @@ dmypy.json
 .pyre/
 
 #venv
-grin_venv
+
+config.py
+sender.txt

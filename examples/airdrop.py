@@ -85,14 +85,14 @@ while True:
             print('%s was aridroped'%mint_to)
             continue
         
-        mint_weid = get_weid(mint_to)
-        if not mint_weid:
-            print('failed to get wechat id of %s. next'%mint_to)
-            continue
+        #mint_weid = get_weid(mint_to)
+        #if not mint_weid:
+        #    print('failed to get wechat id of %s. next'%mint_to)
+        #    continue
 
-        if redis_client.sismember('airdroped', mint_weid):
-            print('%s was aridroped'%mint_to)
-            continue
+        #if redis_client.sismember('airdroped', mint_weid):
+        #    print('%s was aridroped'%mint_to)
+        #    continue
         
         print('try to airdrop to %s %s usdt'%(mint_to, airdrop_amount))
 
@@ -102,7 +102,7 @@ while True:
         try:
             is_ok = json.loads(result)['status']
             if is_ok == 'ok':
-                redis_client.sadd('airdroped', mint_weid)
+                #redis_client.sadd('airdroped', mint_weid)
                 redis_client.sadd('airdroped', mint_to)
         except Exception as e:
             print('failed to airdrop to %s'%mint_to)

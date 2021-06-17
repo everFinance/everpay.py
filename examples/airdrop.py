@@ -108,3 +108,4 @@ while True:
             print('failed to airdrop to %s'%mint_to)
 
         time.sleep(sleep_time)        
+    time.sleep(sleep_time)        

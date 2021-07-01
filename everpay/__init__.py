@@ -15,7 +15,7 @@ class Everpay:
     def get_balance(self, account, chain_type='', chain_id='', token_symbol='', token_id=''):
         if chain_type and chain_id and token_symbol:
             token_tag = get_token_tag(chain_type, chain_id, token_symbol, token_id)
-            path = '/balanceOf/%s/%s'%(token_tag, account.lower())
+            path = '/balance/%s/%s'%(token_tag, account.lower())
         else:
             path = '/balances/%s'%account.lower()
         url = get_url(self.api_server, path)

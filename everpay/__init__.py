@@ -21,12 +21,14 @@ class Everpay:
         url = get_url(self.api_server, path)
         return requests.get(url).json()
 
-    def get_txs(self, account='', page=None):
+    def get_txs(self, account='', order='desc', page=None):
         path = '/txs'
         if account:
             path = '/txs/%s'%account
         if page:
-            path = '%s/?page=%i'%(path, int(page))
+            path = '%s/?order=%s&page=%i'%(path, order, int(page))
+        else:
+            path = '%s/?order=%s'%(path, order)
         url = get_url(self.api_server, path)
         return requests.get(url).json()
     

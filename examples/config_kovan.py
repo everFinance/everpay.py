@@ -1,5 +1,5 @@
 everpay_api_host = 'https://api-dev.everpay.io'
-sender_address = '0x3E577bac3F02AcE01217d76a402B79adfe6E6581'
+sender_address = '0x61EbF673c200646236B2c53465bcA0699455d5FA'
 sender_key_file = './sender.txt'
 transfer_fee_recipient = '0x6451eB7f668de69Fb4C943Db72bCF2A73DeeC6B1'
 airdrop_amount = 2

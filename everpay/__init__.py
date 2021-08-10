@@ -4,7 +4,6 @@ import time, requests
 from .utils import get_url
 from .transaction import Transaction
 from .token import get_token_tag, get_token_decimal, get_token_id
-from .swapIterm import SwapItem
 
 class Everpay:
     def __init__(self, everpay_server_url):
@@ -64,15 +63,13 @@ class Account:
 
         if not token_id:
             token_id = get_token_id(chain_type, chain_id, token_symbol)
-        decimal = get_token_decimal(chain_type, chain_id, token_symbol)
+
         amount_ = str(amount)
         t = Transaction(tx_id='', token_symbol=token_symbol, action='transfer', from_=self.address, to=to,
                         amount=amount_, fee='0', fee_recipient=self.fee_recipient, nonce=str(int(time.time() * 1000)),
                         token_id=token_id, chain_type=chain_type, chain_id=chain_id, data=data, version='v1')
         t.sign(self.private_key)
         return t, t.post(self.everpay.api_server).content
-
-
 
     def swap(self, to, chain_type, chain_id, token_symbol, token_id='', data=''):
 
@@ -84,8 +81,7 @@ class Account:
             token_id = get_token_id(chain_type, chain_id, token_symbol)
 
         amount_ = '0'
-        print(data)
-
+        
         t = Transaction(tx_id='', token_symbol=token_symbol, action='aswap', from_=self.address, to=to,
                         amount=amount_, fee='0', fee_recipient=self.fee_recipient, nonce=str(int(time.time() * 1000)),
                         token_id=token_id, chain_type=chain_type, chain_id=chain_id, data=data, version='v1')

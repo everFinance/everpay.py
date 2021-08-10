@@ -4,6 +4,7 @@ from everpay.swapIterm import SwapItem, SwapData
 
 from web3.auto import w3
 from eth_account.messages import encode_defunct
+import uuid
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print(BASE_DIR)
@@ -23,6 +24,11 @@ def sign(pk, message):
 
     return sig.signature.hex()
 
+
+def create_uuid():
+    return str(uuid.uuid4())
+
+
 def func1():
     item = SwapItem("ethereum-eth-0x0000000000000000000000000000000000000000",
                     "42",
@@ -30,7 +36,7 @@ def func1():
                     "0x3314183F9F3CAcf8e4915dA59f754568345aF4D3",
                     "99999")
 
-    swap_data = SwapData(item, int(time.time()*1000 + 3000), "56789", "v1")
+    swap_data = SwapData(item, int(time.time() * 1000 + 3000), create_uuid(), "v1")
     #
     # # item2 = SwapItem("ethereum-eth-0x0000000000000000000000000000000000000000",
     # #                  "42",
@@ -51,7 +57,7 @@ def func2():
                     sender.address,
                     "0x3314183F9F3CAcf8e4915dA59f754568345aF4D3",
                     "99999")
-    swap_data = SwapData(item, int(time.time()*1000 + 6000), "56789", "v1")
+    swap_data = SwapData(item, int(time.time() * 1000 + 6000), create_uuid(), "v1")
     data_to_sign = swap_data.get_sign_data()
     sig = sign(pk, data_to_sign)
     # print(sig)

@@ -10,6 +10,7 @@ TOKEN_LIST = [
     ['ethereum', '1', 'usdc', '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', 6],
     ['ethereum', '1', 'dai', '0x6b175474e89094c44da98b954eedeac495271d0f', 18],
     ['ethereum', '1', 'uni', '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984', 18],
+    ['ethereum', '1', 'sos', '0x3b484b82567a09e2588a13d54d032153f0c0aee0', 18]
 ]
 
 def get_token_id(chain_type, chain_id, token_symbol):

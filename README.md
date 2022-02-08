@@ -14,7 +14,7 @@ pip install everpay
 
 ```python
 import everpay
-api_server = 'https://api-kovan.everpay.io'
+api_server = 'https://api-dev.everpay.io'
 e = everpay.Everpay(api_server)
 e.get_info()
 e.get_balance('0x61EbF673c200646236B2c53465bcA0699455d5FA', 'ethereum', '42', 'eth')
@@ -24,9 +24,13 @@ e.get_balance('0x61EbF673c200646236B2c53465bcA0699455d5FA', 'ethereum', '42', 'e
 
 ```python
 import everpay
-api_server = 'https://api-kovan.everpay.io'
-account = everpay.Account(api_server, '0x61EbF673c200646236B2c53465bcA0699455d5FA', '9259ecfa1a5e4b494c93985162c84d4d7f7d7d90d62bffa0d855a5981629bfa3')
-account.transfer('0xf9593A9d7F735814B87D08e8D8aD624f58d53B10', int(0.001 * 10**18), 'ethereum', '42', 'eth')
+api_server = 'https://api-dev.everpay.io'
+fee_recipient = '0x6451eB7f668de69Fb4C943Db72bCF2A73DeeC6B1'
+address = ''
+private_key = ''
+receiver = ''
+account = everpay.Account(api_server, address, private_key, None, fee_recipient)
+account.transfer(receiver, int(0.001 * 10**18), 'ethereum', '42', 'eth')
 ```
 
 ## todo

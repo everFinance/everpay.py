@@ -58,7 +58,7 @@ def get_weid(address):
             time.sleep(sleep_time)
 
 pk = open(sender_key_file).read().strip()
-sender = everpay.Account(everpay_api_host, sender_address, pk, transfer_fee_recipient)
+sender = everpay.Account(everpay_api_host, sender_address, pk, None, transfer_fee_recipient)
 
 while True:
     print()

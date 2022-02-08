@@ -10,7 +10,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     author = 'xiaojay',
     author_email = 'xiaojay@gmail.com',
-    install_requires=['requests', 'web3.py'],
+    install_requires=['requests', 'web3.py', 'python-jose'],
     url = '',
     download_url = '',
     classifiers=[

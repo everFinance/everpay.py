@@ -40,10 +40,11 @@ class Everpay:
 
 
 class Account:
-    def __init__(self, everpay_server_url, address, private_key, fee_recipient=''):
+    def __init__(self, everpay_server_url, address, private_key, ar_wallet, fee_recipient):
         self.everpay = Everpay(everpay_server_url)
         self.address = address
         self.private_key = private_key
+        self.ar_wallet = ar_wallet
         self.fee_recipient = fee_recipient
 
     def get_balance(self, chain_type, chain_id, token_symbol, token_id=''):
@@ -65,13 +66,28 @@ class Account:
             token_id = get_token_id(chain_type, chain_id, token_symbol)
 
         amount_ = str(amount)
+        
+        if self.ar_wallet and data:
+            data = json.loads(data)
+            data['arOwner'] = self.ar_wallet.owner
+            data = json.dumps(data)
+        if self.ar_wallet and not data:
+            data = json.dumps({'arOwner': self.ar_wallet.owner})
+
         t = Transaction(tx_id='', token_symbol=token_symbol, action='transfer', from_=self.address, to=to,
                         amount=amount_, fee='0', fee_recipient=self.fee_recipient, nonce=str(int(time.time() * 1000)),
                         token_id=token_id, chain_type=chain_type, chain_id=chain_id, data=data, version='v1')
-        t.sign(self.private_key)
+        
+        if self.private_key:
+            t.sign(self.private_key)
+        elif self.ar_wallet:
+            t.sign_with_ar_wallet(self.ar_wallet)
+        else:
+            raise Exception('No key or wallet')
+
         return t, t.post(self.everpay.api_server).content
 
-    def swap(self, to, chain_type, chain_id, token_symbol, token_id='', data=''):
+    def bundle(self, to, chain_type, chain_id, token_symbol, token_id='', data=''):
 
         chain_type = chain_type.lower()
         chain_id = str(chain_id).lower()
@@ -82,7 +98,7 @@ class Account:
 
         amount_ = '0'
         
-        t = Transaction(tx_id='', token_symbol=token_symbol, action='aswap', from_=self.address, to=to,
+        t = Transaction(tx_id='', token_symbol=token_symbol, action='bundle', from_=self.address, to=to,
                         amount=amount_, fee='0', fee_recipient=self.fee_recipient, nonce=str(int(time.time() * 1000)),
                         token_id=token_id, chain_type=chain_type, chain_id=chain_id, data=data, version='v1')
         t.sign(self.private_key)

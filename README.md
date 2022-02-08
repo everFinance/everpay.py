@@ -1,6 +1,6 @@
 # everpay.py
 
-Python wrappers for everpay.io api
+Python wrappers for everpay.io [api](https://docs.everpay.io/).
 
 Install with
 
@@ -10,7 +10,7 @@ pip install everpay
 
 ## Examples
 
-- 查询
+- query
 
 ```python
 import everpay
@@ -20,7 +20,7 @@ e.get_info()
 e.get_balance('0x61EbF673c200646236B2c53465bcA0699455d5FA', 'ethereum', '42', 'eth')
 ```
 
-- 转账
+- transfer
 
 ```python
 import everpay

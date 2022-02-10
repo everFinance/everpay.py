@@ -9,9 +9,9 @@ def create_uuid():
 api_server = 'https://api-dev.everpay.io'
 fee_recipient = '0x6451eB7f668de69Fb4C943Db72bCF2A73DeeC6B1'
 
-address = '0x61EbF673c200646236B2c53465bcA0699455d5FA'
-pk = '9259ecfa1a5e4b494c93985162c84d4d7f7d7d90d62bffa0d855a5981629bfa3'
-receiver = '0x258D9aeF9184d9e21f9b882E243c42fAC1466A59'
+address = ''
+pk = ''
+receiver = ''
 
 account = everpay.Account(api_server, address, pk, None, fee_recipient)
 

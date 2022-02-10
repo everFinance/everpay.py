@@ -30,8 +30,14 @@ address = ''
 private_key = ''
 receiver = ''
 account = everpay.Account(api_server, address, private_key, None, fee_recipient)
-account.transfer(receiver, int(0.001 * 10**18), 'ethereum', '42', 'eth')
+t, result = account.transfer(receiver, int(0.001 * 10**18), 'ethereum', '42', 'eth')
+print(t.ever_hash)
+print(result)
 ```
+
+- bundle
+
+see example/bundle_tx.py
 
 ## todo
 - [] deposit/withdraw

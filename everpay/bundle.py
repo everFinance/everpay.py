@@ -35,6 +35,15 @@ class BundleData:
         self.sigs = {}
 
     def get_data(self):
+        # make sure eth address in sigs is checksum address
+        sigs = {}
+        for k, v in self.sigs.items():
+            if is_ar_address(k):
+                continue
+            k_ = w3.toChecksumAddress(k)
+            sigs[k_] = v
+        self.sigs = sigs
+
         data = {
             'bundle': {
                 'items': [item.to_dict() for item in self.items],

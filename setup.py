@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='everpay',
-    version='0.1.1',
+    version='0.1.2',
     packages=['everpay',],
     license='MIT',
     description = 'Python wrappers for everpay.io api',

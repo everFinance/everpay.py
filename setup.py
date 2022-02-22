@@ -12,11 +12,11 @@ setuptools.setup(
     author_email = 'xiaojay@gmail.com',
     install_requires=['requests', 'web3', 'python-jose'],
     url = 'https://github.com/everFinance/everpay.py',
-    download_url = 'https://github.com/everFinance/everpay.py/archive/refs/tags/v0.1.1.tar.gz',
+    download_url = 'https://github.com/everFinance/everpay.py/archive/refs/tags/v0.1.2.tar.gz',
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 2",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    )
+)

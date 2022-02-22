@@ -35,7 +35,6 @@ class BundleData:
         self.sigs = {}
 
     def get_data(self):
-        # make sure eth address in sigs is checksum address
         sigs = {}
         for k, v in self.sigs.items():
             if is_ar_address(k):
@@ -43,7 +42,6 @@ class BundleData:
             k_ = w3.toChecksumAddress(k)
             sigs[k_] = v
         self.sigs = sigs
-
         data = {
             'bundle': {
                 'items': [item.to_dict() for item in self.items],
@@ -125,5 +123,20 @@ def load_bundle(data):
 
     return bundle
 
+def sign_bundle(data_to_sign, address, pk=None, wallet=None):
+    
+    if is_ar_address(address):
+        message = _hash_eip191_message(encode_defunct(text=data_to_sign))
+    
+        sig = base64url_encode(wallet.sign(message)).decode()
+        sig = f'{sig},{wallet.owner}'
+
+    else:
+        pk = bytearray.fromhex(pk)
+        message = encode_defunct(text=data_to_sign)
+        sig = w3.eth.account.sign_message(message, private_key=pk)
+        sig = sig.signature.hex()
+
+    return sig
 
 

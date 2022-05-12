@@ -1,6 +1,5 @@
 import json
 import time, requests
-from pyrsistent import get_in
 from .utils import get_url, get_info
 from .transaction import Transaction
 from .token import get_token_list
@@ -21,7 +20,7 @@ class Client:
         return self.token_list
     
     def get_token(self, token_symbol):
-        return self.token_list[token_symbol.lower()]
+        return self.token_list[token_symbol.upper()]
 
     def get_support_tokens(self):
         return list(self.get_token_list().keys())
@@ -33,6 +32,7 @@ class Client:
         else:
             path = '/balances/%s' % account
         url = get_url(self.api_server, path)
+        print(url)
         return requests.get(url).json()
 
     def get_txs(self, account='', order='desc', page=None):
@@ -53,42 +53,39 @@ class Client:
 
 
 class Account:
-    def __init__(self, everpay_server_url, address, private_key, ar_wallet):
+    def __init__(self, everpay_server_url, signer):
         self.client = Client(everpay_server_url)
-        self.address = address
-        self.private_key = private_key
-        self.ar_wallet = ar_wallet
-
+        self.address = signer.address
+        self.signer = signer
+       
     def get_balance(self, token_symbol=''):
         return self.client.get_balance(self.address, token_symbol)
 
     def get_txs(self):
         return self.client.get_txs(self.address)
+    
+    def get_transfer_fee(self):
+        return 0
 
     def transfer(self, token_symbol, to, amount, data=''):
 
         token = self.client.get_token(token_symbol)
-        amount_ = str(amount)
-        
-        if self.ar_wallet and data:
+        fee = self.get_transfer_fee()
+
+        if self.signer.type == 'AR' and data:
             data = json.loads(data)
-            data['arOwner'] = self.ar_wallet.owner
+            data['arOwner'] = self.signer.owner
             data = json.dumps(data)
-        if self.ar_wallet and not data:
-            data = json.dumps({'arOwner': self.ar_wallet.owner})
+        if self.signer.type == 'AR' and not data:
+            data = json.dumps({'arOwner': self.signer.owner})
 
         t = Transaction(tx_id='', token_symbol=token_symbol, action='transfer', from_=self.address, to=to,
-                        amount=amount_, fee='0', fee_recipient=self.fee_recipient, nonce=str(int(time.time() * 1000)),
+                        amount=str(amount), fee=str(fee), fee_recipient=self.client.fee_recipient, nonce=str(int(time.time() * 1000)),
                         token_id=token.id, chain_type=token.chain_type, chain_id=token.chain_id, data=data, version='v1')
         
-        if self.private_key:
-            t.sign(self.private_key)
-        elif self.ar_wallet:
-            t.sign_with_ar_wallet(self.ar_wallet)
-        else:
-            raise Exception('No key or wallet')
-
-        return t, t.post(self.everpay.api_server).content
+        t.sig = self.signer.sign(str(t))
+        
+        return t, t.post(self.client.api_server).content
 
     def bundle(self, token_symbol, to, data=''):
 
@@ -100,4 +97,4 @@ class Account:
                         token_id=token.token_id, chain_type=token.chain_type, chain_id=token.chain_id, data=data, version='v1')
         t.sign(self.private_key)
 
-        return t, t.post(self.everpay.api_server).content
+        return t, t.post(self.client.api_server).content

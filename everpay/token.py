@@ -2,8 +2,8 @@ import requests, time
 def get_token_list(info):
     tokens = {}    
     for t in info['tokenList']:
-        symbol = t['symbol'].lower()
-        token = Token(t['chainType'], t['chainID'], t['symbol'], t['id'], t['decimals'])
+        symbol = t['symbol']
+        token = Token(t['chainType'], t['chainID'], symbol, t['id'], t['decimals'])
         tokens[symbol] = token
     return tokens
 
@@ -16,7 +16,7 @@ class Token:
         self.decimals = token_decimals
     
     def get_token_tag(self):
-        return '-'.join([self.chain_type, self.symbol, self.id])
+        return ('-'.join([self.chain_type, self.symbol.lower(), self.id]))
 
     def __str__(self):
         return 'token %s (%s-%s)'%(self.symbol, self.chain_type, self.chain_id)

@@ -1,24 +1,37 @@
 import json
-import random
 import time, requests
-from .utils import get_url
+from pyrsistent import get_in
+from .utils import get_url, get_info
 from .transaction import Transaction
-from .token import get_token_tag, get_token_decimal, get_token_id
+from .token import get_token_list
 
-class Everpay:
+class Client:
     def __init__(self, everpay_server_url):
         self.api_server = everpay_server_url
-
+        info_url = get_url(self.api_server, '/info')
+        self.info = get_info(info_url)
+        self.eth_chain_id = self.info['ethChainID']
+        self.fee_recipient = self.info['feeRecipient']
+        self.token_list = get_token_list(self.info)
+        
     def get_info(self):
-        url = get_url(self.api_server, '/info')
-        return requests.get(url).json()
+       return self.info
+    
+    def get_token_list(self):
+        return self.token_list
+    
+    def get_token(self, token_symbol):
+        return self.token_list[token_symbol.lower()]
 
-    def get_balance(self, account, chain_type='', chain_id='', token_symbol='', token_id=''):
-        if chain_type and chain_id and token_symbol:
-            token_tag = get_token_tag(chain_type, chain_id, token_symbol, token_id)
-            path = '/balance/%s/%s' % (token_tag, account.lower())
+    def get_support_tokens(self):
+        return list(self.get_token_list().keys())
+
+    def get_balance(self, account, token_symbol=''):
+        if token_symbol:
+            token_tag = self.get_token(token_symbol).get_token_tag()
+            path = '/balance/%s/%s' % (token_tag, account)
         else:
-            path = '/balances/%s' % account.lower()
+            path = '/balances/%s' % account
         url = get_url(self.api_server, path)
         return requests.get(url).json()
 
@@ -40,31 +53,21 @@ class Everpay:
 
 
 class Account:
-    def __init__(self, everpay_server_url, address, private_key, ar_wallet, fee_recipient):
-        self.everpay = Everpay(everpay_server_url)
+    def __init__(self, everpay_server_url, address, private_key, ar_wallet):
+        self.client = Client(everpay_server_url)
         self.address = address
         self.private_key = private_key
         self.ar_wallet = ar_wallet
-        self.fee_recipient = fee_recipient
 
-    def get_balance(self, chain_type, chain_id, token_symbol, token_id=''):
-        chain_type = chain_type.lower()
-        chain_id = str(chain_id).lower()
-        token_symbol = token_symbol.lower()
-        return self.everpay.get_balance(self.address, chain_type, chain_id, token_symbol, token_id='')
+    def get_balance(self, token_symbol=''):
+        return self.client.get_balance(self.address, token_symbol)
 
     def get_txs(self):
-        return self.everpay.get_txs(self.address)
+        return self.client.get_txs(self.address)
 
-    def transfer(self, to, amount, chain_type, chain_id, token_symbol, token_id='', data=''):
+    def transfer(self, token_symbol, to, amount, data=''):
 
-        chain_type = chain_type.lower()
-        chain_id = str(chain_id).lower()
-        token_symbol = token_symbol.lower()
-
-        if not token_id:
-            token_id = get_token_id(chain_type, chain_id, token_symbol)
-
+        token = self.client.get_token(token_symbol)
         amount_ = str(amount)
         
         if self.ar_wallet and data:
@@ -76,7 +79,7 @@ class Account:
 
         t = Transaction(tx_id='', token_symbol=token_symbol, action='transfer', from_=self.address, to=to,
                         amount=amount_, fee='0', fee_recipient=self.fee_recipient, nonce=str(int(time.time() * 1000)),
-                        token_id=token_id, chain_type=chain_type, chain_id=chain_id, data=data, version='v1')
+                        token_id=token.id, chain_type=token.chain_type, chain_id=token.chain_id, data=data, version='v1')
         
         if self.private_key:
             t.sign(self.private_key)
@@ -87,20 +90,14 @@ class Account:
 
         return t, t.post(self.everpay.api_server).content
 
-    def bundle(self, to, chain_type, chain_id, token_symbol, token_id='', data=''):
+    def bundle(self, token_symbol, to, data=''):
 
-        chain_type = chain_type.lower()
-        chain_id = str(chain_id).lower()
-        token_symbol = token_symbol.lower()
-
-        if not token_id:
-            token_id = get_token_id(chain_type, chain_id, token_symbol)
-
+        token = self.client.get_token(token_symbol)
         amount_ = '0'
         
         t = Transaction(tx_id='', token_symbol=token_symbol, action='bundle', from_=self.address, to=to,
                         amount=amount_, fee='0', fee_recipient=self.fee_recipient, nonce=str(int(time.time() * 1000)),
-                        token_id=token_id, chain_type=chain_type, chain_id=chain_id, data=data, version='v1')
+                        token_id=token.token_id, chain_type=token.chain_type, chain_id=token.chain_id, data=data, version='v1')
         t.sign(self.private_key)
 
         return t, t.post(self.everpay.api_server).content

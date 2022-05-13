@@ -7,6 +7,8 @@ from jose.utils import base64url_encode
 class ETHSigner:
     def __init__(self, private_key):
         self.type = 'ETH'
+        if private_key.start_with('0x'):
+            private_key = private_key[:2]
         self.private_key = private_key
         self.address = Account.from_key(self.private_key).address
 

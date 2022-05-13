@@ -7,7 +7,10 @@ class Account:
         self.client = Client(everpay_server_url)
         self.address = signer.address
         self.signer = signer
-       
+    
+    def get_support_tokens(self):
+        return self.client.get_support_tokens()
+        
     def get_balance(self, token_symbol=''):
         return self.client.get_balance(self.address, token_symbol)
 

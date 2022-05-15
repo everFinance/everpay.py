@@ -41,3 +41,6 @@ class Account:
 
     def transfer(self, token_symbol, to, amount, data=''):
         return self.send_tx('transfer', token_symbol, to, amount, data)
+    
+    def bundle(self, token_symbol, to, amount, data):
+        return self.send_tx('bundle', token_symbol, to, amount, data)

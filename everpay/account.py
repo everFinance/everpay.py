@@ -13,7 +13,10 @@ class Account(Client):
 
     def balances(self):
         return self.get_balance(self.address)
-        
+    
+    def sign(self, msg):
+        return self.signer.sign(msg)
+
     def send_tx(self, action, token_symbol, to, amount, data):
         token = self.get_token_info(token_symbol)
         fee = self.get_transfer_fee()

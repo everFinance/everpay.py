@@ -4,7 +4,10 @@ from .token import get_token_list
 
 class Client:
     def __init__(self, everpay_server_url):
+        if everpay_server_url.endswith('/'):
+            everpay_server_url = everpay_server_url[:-1]
         self.api_server = everpay_server_url
+
         info_url = get_url(self.api_server, '/info')
         self.info = get_info(info_url)
         self.eth_chain_id = self.info['ethChainID']

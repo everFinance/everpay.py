@@ -17,7 +17,7 @@ class Client:
     def get_token_list(self):
         return self.token_list
     
-    def get_token(self, token_symbol):
+    def get_token_info(self, token_symbol):
         return self.token_list[token_symbol.upper()]
 
     def get_support_tokens(self):
@@ -25,12 +25,12 @@ class Client:
 
     def get_balance(self, account, token_symbol=''):
         if token_symbol:
-            token_tag = self.get_token(token_symbol).get_token_tag()
+            token_tag = self.get_token_info(token_symbol).get_token_tag()
             path = '/balance/%s/%s' % (token_tag, account)
         else:
             path = '/balances/%s' % account
         url = get_url(self.api_server, path)
-        print(url)
+        #print(url)
         return requests.get(url).json()
 
     def get_txs(self, account='', order='desc', page=None):

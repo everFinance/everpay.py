@@ -18,7 +18,7 @@ class Account(Client):
         return self.signer.sign(msg)
 
     def send_tx(self, action, token_symbol, to, amount, data):
-        token = self.get_token_info(token_symbol)
+        token = self.get_token(token_symbol)
         fee = self.get_transfer_fee()
 
         if self.signer.type == 'AR' and data:

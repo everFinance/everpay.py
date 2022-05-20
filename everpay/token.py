@@ -12,6 +12,8 @@ TOKEN_LIST = [
     ['arweave,ethereum', '0,42', 'ar', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,0xcc9141efa8c20c7df0778748255b1487957811be', 12],
     ['moonbase', '1287', 'dev', '0x0000000000000000000000000000000000000000', 18],
     ['moonbase', '1287', 'zlk', '0x322f069e9b8b554f3fb43cefcb0c7b3222242f0e', 18],
+    
+    ['conflux', '71', 'cfx', '0x0000000000000000000000000000000000000000', 18],
 
     #mainnet
     ['ethereum', '1', 'eth', '0x0000000000000000000000000000000000000000', 18],
@@ -24,11 +26,15 @@ TOKEN_LIST = [
     ['ethereum', '1', 'bank', '0x2d94aa3e47d9d5024503ca8491fce9a2fb4da198', 18],
     ['ethereum', '1', 'dodo', '0x43dfc4159d86f3a37a5a4b3d4580b888ad7d4ddd', 18],
     ['ethereum', '1', 'mask', '0x69af81e73a73b40adf4f3d4223cd9b1ece623074', 18],
+    ['ethereum', '1', 't4ever', '0xeaba187306335dd773ca8042b3792c46e213636a', 18],
+
     ['moonbeam', '1284', 'zlk', '0x3fd9b6c9a24e09f67b7b706d72864aebb439100c', 18],
     ['moonbeam', '1284', 'glmr', '0x0000000000000000000000000000000000000000', 18],
     ['arweave,ethereum', '0,1', 'ar', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,0x4fadc7a98f2dc96510e42dd1a74141eeae0c1543', 12],
     ['arweave', '0', 'ardrive', '-8A6RexFkpfWwuyVO98wzSFZh0d6VJuI-buTJvlwOJQ', 18],
     ['arweave', '0', 'vrt', 'usjm4PCxUd5mtaon7zc97-dt-3qf67yPyqgzLnLqk5A', 18],
+
+    ['conflux', '1030', 'cfx', '0x0000000000000000000000000000000000000000', 18],
 ]
 
 def get_token_id(chain_type, chain_id, token_symbol):

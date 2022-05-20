@@ -116,7 +116,7 @@ def load_bundle(data):
     
     data = data['bundle']
     bundle = BundleData(None, data['expiration'], data['salt'], data['version'])
-    bundle.sigs = data['sigs']
+    bundle.sigs = data.get('sigs', {})
     for i in data['items']:
         item = BundleItem(i['tag'], i['chainID'], i['from'], i['to'], i['amount'])
         bundle.add_item(item)

@@ -1,4 +1,4 @@
-import hashlib
+import hashlib, requests, time
 
 from jose.utils import base64url_decode, base64url_encode
 from jose import jwk
@@ -36,3 +36,12 @@ def verify_ar_sig(owner, message, sig):
 def owner_to_address(owner):
     result = base64url_encode(hashlib.sha256(base64url_decode(owner.encode('ascii'))).digest()).decode()
     return result
+
+def get_info(info_url):
+    for i in range(3):
+        try:
+            return requests.get(info_url).json()
+        except:
+            time.sleep(0.2)
+            continue
+    raise ValueError('failed to get info')

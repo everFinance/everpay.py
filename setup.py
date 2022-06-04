@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='everpay',
-    version='0.1.5',
+    version='0.2.0',
     packages=['everpay',],
     license='MIT',
     description = 'Python wrappers for everpay.io api',
@@ -12,7 +12,7 @@ setuptools.setup(
     author_email = 'xiaojay@gmail.com',
     install_requires=['requests', 'web3', 'python-jose'],
     url = 'https://github.com/everFinance/everpay.py',
-    download_url = 'https://github.com/everFinance/everpay.py/archive/refs/tags/v0.1.5.tar.gz',
+    download_url = 'https://github.com/everFinance/everpay.py/archive/refs/tags/v0.2.0.tar.gz',
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 2",

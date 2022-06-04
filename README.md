@@ -8,6 +8,9 @@ Install with
 pip install everpay
 ```
 
+## v0.1.x 
+v0.1.x version api example [v0.1.x](./docs/v0.1.x.md)
+
 ## Examples
 
 - query
@@ -15,9 +18,13 @@ pip install everpay
 ```python
 import everpay
 api_server = 'https://api-dev.everpay.io'
-e = everpay.Everpay(api_server)
-e.get_info()
-e.get_balance('0x61EbF673c200646236B2c53465bcA0699455d5FA', 'ethereum', '42', 'eth')
+c = everpay.Client(api_server)
+print(c.get_info())
+print(c.get_token_list())
+print(c.get_support_tokens())
+c.get_balance('0x61EbF673c200646236B2c53465bcA0699455d5FA', 'eth')
+c.get_balance('0x61EbF673c200646236B2c53465bcA0699455d5FA', 'ar')
+
 ```
 
 - transfer
@@ -25,14 +32,17 @@ e.get_balance('0x61EbF673c200646236B2c53465bcA0699455d5FA', 'ethereum', '42', 'e
 ```python
 import everpay
 api_server = 'https://api-dev.everpay.io'
-fee_recipient = '0x6451eB7f668de69Fb4C943Db72bCF2A73DeeC6B1'
-address = ''
-private_key = ''
-receiver = ''
-account = everpay.Account(api_server, address, private_key, None, fee_recipient)
-t, result = account.transfer(receiver, int(0.001 * 10**18), 'ethereum', '42', 'eth')
+
+pk = ''
+#eth account
+signer = everpay.ETHSigner(pk)
+#ar account
+#signer = everpay.ARSigner('arweave-keyfile-xxx.json')
+account = everpay.Account(api_server, signer)
+t, result = account.transfer('usdt', '0x911F42b0229c15bBB38D648B7Aa7CA480eD977d6', 10**6)
 print(t.ever_hash)
 print(result)
+
 ```
 
 - bundle

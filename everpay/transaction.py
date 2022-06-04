@@ -1,7 +1,6 @@
 import requests
 from web3.auto import w3
 from eth_account.messages import encode_defunct, _hash_eip191_message
-from jose.utils import base64url_encode
 
 class Transaction:
     def __init__(self, tx_id, token_symbol, action, from_, to, amount, 
@@ -37,19 +36,6 @@ class Transaction:
                 'chainID:' + self.chain_id + '\n' + \
                 'data:' + self.data + '\n' + \
                 'version:' + self.version 
-
-    def sign(self, private_key):
-        pk = bytearray.fromhex(private_key)
-        message = encode_defunct(text=str(self))
-        sig = w3.eth.account.sign_message(message, private_key=pk)
-        self.sig = sig.signature.hex()
-        return sig
-    
-    def sign_with_ar_wallet(self, wallet):
-        h = _hash_eip191_message(encode_defunct(text=str(self)))
-        sig = base64url_encode(wallet.sign(h)).decode()
-        self.sig = sig
-        return sig
 
     def get_ever_hash(self):
         message = encode_defunct(text=str(self))

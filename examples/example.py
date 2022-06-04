@@ -1,4 +1,3 @@
-from sys import api_version
 import everpay
 api_server = 'https://api-dev.everpay.io'
 c = everpay.Client(api_server)
@@ -12,7 +11,7 @@ print(c.get_balance('E1YK40az7mbpAYrdvLNp9PdzacT65DaUeJAkobxskyU', 'ar'))
 
 print()
 print('--------------------------')
-pk = '9259ecfa1a5e4b494c93985162c84d4d7f7d7d90d62bffa0d855a5981629bfa3'
+pk = ''
 signer = everpay.ETHSigner(pk)
 account = everpay.Account(api_server, signer)
 print(account.get_support_tokens())

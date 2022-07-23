@@ -17,7 +17,7 @@ class Account(Client):
     def sign(self, msg):
         return self.signer.sign(msg)
 
-    def send_tx(self, action, token_symbol, to, amount, data):
+    def send_tx(self, action, token_symbol, to, amount, data, is_dry_run):
         token = self.get_token(token_symbol)
         fee = self.get_transfer_fee()
 
@@ -34,10 +34,13 @@ class Account(Client):
         
         t.sig = self.signer.sign(str(t))
         
+        if is_dry_run:
+            return t
+
         return t, t.post(self.api_server).content
 
-    def transfer(self, token_symbol, to, amount, data=''):
-        return self.send_tx('transfer', token_symbol, to, amount, data)
+    def transfer(self, token_symbol, to, amount, data='', is_dry_run=False):
+        return self.send_tx('transfer', token_symbol, to, amount, data, is_dry_run)
     
-    def bundle(self, token_symbol, to, amount, data):
-        return self.send_tx('bundle', token_symbol, to, amount, data)
+    def bundle(self, token_symbol, to, amount, data, is_dry_run=False):
+        return self.send_tx('bundle', token_symbol, to, amount, data, is_dry_run)

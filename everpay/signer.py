@@ -14,7 +14,12 @@ class ETHSigner:
 
     def sign(self, msg):
         pk = bytearray.fromhex(self.private_key)
-        message = encode_defunct(text=msg)
+        if type(msg) == type(""):
+            message = encode_defunct(text=msg)
+        elif type(msg) == type(b""):
+            message = encode_defunct(primitive=msg)
+        else:
+            raise ValueError("Invalid msg")  
         sig = w3.eth.account.sign_message(message, private_key=pk)
         return sig.signature.hex()
 

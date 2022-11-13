@@ -21,8 +21,10 @@ class Client:
         return self.token_list
     
     def get_token(self, token_symbol):
+        if self.token_list.get(token_symbol):
+            return self.token_list[token_symbol]
         return self.token_list[token_symbol.upper()]
-    
+        
     def get_token_tag(self, token_symbol):
         token = self.get_token(token_symbol)
         if token:

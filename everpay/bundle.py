@@ -38,9 +38,11 @@ class BundleData:
         sigs = {}
         for k, v in self.sigs.items():
             if is_ar_address(k):
-                continue
-            k_ = w3.toChecksumAddress(k)
-            sigs[k_] = v
+                sigs[k] = v
+            else:
+                k_ = w3.toChecksumAddress(k)
+                sigs[k_] = v
+                
         self.sigs = sigs
         data = {
             'bundle': {

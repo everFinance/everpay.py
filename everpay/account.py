@@ -16,6 +16,9 @@ class Account(Client):
     
     def sign(self, msg):
         return self.signer.sign(msg)
+    
+    def sign_bundle(self, msg):
+        return self.signer.sign_bundle(msg)
 
     def send_tx(self, action, token_symbol, to, amount, data, is_dry_run):
         token = self.get_token(token_symbol)

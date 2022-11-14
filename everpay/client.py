@@ -28,7 +28,7 @@ class Client:
     def get_token_tag(self, token_symbol):
         token = self.get_token(token_symbol)
         if token:
-            return token.get_token_tag()
+            return token.token_tag
 
     def get_token_decimals(self, token_symbol):
         token = self.get_token(token_symbol)
@@ -40,7 +40,7 @@ class Client:
 
     def get_balance(self, account, token_symbol=''):
         if token_symbol:
-            token_tag = self.get_token(token_symbol).get_token_tag()
+            token_tag = self.get_token_tag(token_symbol)
             path = '/balance/%s/%s' % (token_tag, account)
         else:
             path = '/balances/%s' % account

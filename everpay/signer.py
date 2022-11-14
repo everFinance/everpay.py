@@ -22,6 +22,9 @@ class ETHSigner:
             raise ValueError("Invalid msg")  
         sig = w3.eth.account.sign_message(message, private_key=pk)
         return sig.signature.hex()
+    
+    def sign_bundle(self, msg):
+        return self.sign(msg)
 
 class ARSigner:
     def __init__(self, arwallet_file_path):
@@ -35,4 +38,8 @@ class ARSigner:
         sig = base64url_encode(self.wallet.sign(h)).decode()
         
         return sig
-        
+    
+    def sign_bundle(self, msg):
+        sig = self.sign(msg)
+        sig = f'{sig},{self.owner}'
+        return sig

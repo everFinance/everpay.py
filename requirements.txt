@@ -9,11 +9,11 @@ bitarray==2.5.1
 certifi==2022.6.15
 cffi==1.15.0
 charset-normalizer==2.0.12
-cryptography==37.0.2
+cryptography==38.0.3
 cytoolz==0.11.2
 ecdsa==0.17.0
 eth-abi==2.1.1
-eth-account==0.5.8
+eth-account==0.5.9
 eth-hash==0.3.2
 eth-keyfile==0.5.1
 eth-keys==0.3.4
@@ -31,7 +31,7 @@ multiaddr==0.0.9
 multidict==6.0.2
 netaddr==0.8.0
 parsimonious==0.8.1
-protobuf==3.20.1
+protobuf==3.20.2
 psutil==5.9.1
 pyasn1==0.4.8
 pycparser==2.21

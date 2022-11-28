@@ -20,8 +20,8 @@ class Account(Client):
     def sign_bundle(self, msg):
         return self.signer.sign_bundle(msg)
 
-    def send_tx(self, action, token_symbol, to, amount, data, is_dry_run):
-        token = self.get_token(token_symbol)
+    def send_tx(self, action, token_symbol_or_tag, to, amount, data, is_dry_run):
+        token = self.get_token(token_symbol_or_tag)
         fee = self.get_transfer_fee()
 
         if self.signer.type == 'AR' and data:
@@ -31,7 +31,7 @@ class Account(Client):
         if self.signer.type == 'AR' and not data:
             data = json.dumps({'arOwner': self.signer.owner})
 
-        t = Transaction(tx_id='', token_symbol=token_symbol, action=action, from_=self.address, to=to,
+        t = Transaction(tx_id='', token_symbol=token.symbol, action=action, from_=self.address, to=to,
                         amount=str(amount), fee=str(fee), fee_recipient=self.fee_recipient, nonce=str(int(time.time() * 1000)),
                         token_id=token.id, chain_type=token.chain_type, chain_id=token.chain_id, data=data, version='v1')
         
@@ -42,8 +42,8 @@ class Account(Client):
 
         return t, t.post(self.api_server).content
 
-    def transfer(self, token_symbol, to, amount, data='', is_dry_run=False):
-        return self.send_tx('transfer', token_symbol, to, amount, data, is_dry_run)
+    def transfer(self, token_symbol_or_tag, to, amount, data='', is_dry_run=False):
+        return self.send_tx('transfer', token_symbol_or_tag, to, amount, data, is_dry_run)
     
-    def bundle(self, token_symbol, to, amount, data, is_dry_run=False):
-        return self.send_tx('bundle', token_symbol, to, amount, data, is_dry_run)
+    def bundle(self, token_symbol_or_tag, to, amount, data, is_dry_run=False):
+        return self.send_tx('bundle', token_symbol_or_tag, to, amount, data, is_dry_run)

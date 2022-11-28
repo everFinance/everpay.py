@@ -45,3 +45,8 @@ def get_info(info_url):
             time.sleep(0.2)
             continue
     raise ValueError('failed to get info')
+
+def is_token_tag(token_symbol_or_tag):
+    if token_symbol_or_tag.find('-') != -1:
+        return True
+    return False

@@ -30,7 +30,11 @@ class Client:
             return tokens[0]
         
         if tokens and len(tokens) > 1:
-            raise Exception("found multiple tokens with this symbol, use token tag instead of token symbol.")
+            tags = []
+            for token in tokens:
+                tags.append(token.token_tag)
+            tags = "; ".join(tags)
+            raise Exception("found multiple tokens (%s) with this symbol (), use token tag instead."%(tags, token_symbol_or_tag))
         
     def get_token_tag(self, token_symbol):
         token = self.get_token(token_symbol)

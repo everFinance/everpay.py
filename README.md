@@ -53,7 +53,7 @@ see example/bundle_tx.py
 
 sometimes two token may have same token symbol in everpay. for example, usdc bridged from ethereum and usdc bridged from bsc have the same token symbol "usdc". 
 
-In this case, you should cuse token tag, which is always unique in everpay, to call api function.
+In this case, you should use token tag, which is always unique in everpay, to call api function.
 
 ```python
 

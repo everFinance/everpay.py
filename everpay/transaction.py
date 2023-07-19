@@ -40,7 +40,7 @@ class Transaction:
     def get_ever_hash(self):
         message = encode_defunct(text=str(self))
         message_hash = _hash_eip191_message(message)
-        return w3.toHex(message_hash)
+        return w3.to_hex(message_hash)
 
     def to_dict(self):
         return {

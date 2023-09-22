@@ -63,12 +63,12 @@ class Client:
         url = get_url(self.api_server, path)
         return requests.get(url).json()
 
-    def get_txs(self, account='', order='desc', page=None):
+    def get_txs(self, account='', order='desc', cursor=None):
         path = '/txs'
         if account:
             path = '/txs/%s' % account
-        if page:
-            path = '%s/?order=%s&page=%i' % (path, order, int(page))
+        if cursor:
+            path = '%s/?order=%s&cursor=%i' % (path, order, int(cursor))
         else:
             path = '%s/?order=%s' % (path, order)
         url = get_url(self.api_server, path)

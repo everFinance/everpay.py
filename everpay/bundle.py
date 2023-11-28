@@ -40,7 +40,7 @@ class BundleData:
             if is_ar_address(k):
                 sigs[k] = v
             else:
-                k_ = w3.toChecksumAddress(k)
+                k_ = w3.to_checksum_address(k)
                 sigs[k_] = v
                 
         self.sigs = sigs

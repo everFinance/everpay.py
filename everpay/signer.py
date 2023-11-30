@@ -1,9 +1,9 @@
+import hashlib
 import arweave
 from eth_account import Account
 from web3.auto import w3
 from eth_account.messages import encode_defunct, _hash_eip191_message
 from jose.utils import base64url_encode
-
 class ETHSigner:
     def __init__(self, private_key):
         self.type = 'ETH'
@@ -34,9 +34,8 @@ class ARSigner:
         self.owner = self.wallet.owner
 
     def sign(self, msg):
-        h = _hash_eip191_message(encode_defunct(text=msg))
+        h = hashlib.sha256(msg.encode()).digest()
         sig = base64url_encode(self.wallet.sign(h)).decode()
-        
         return sig
     
     def sign_bundle(self, msg):

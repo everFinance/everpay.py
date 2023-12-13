@@ -63,16 +63,27 @@ class Client:
         url = get_url(self.api_server, path)
         return requests.get(url).json()
 
-    def get_txs(self, account='', order='desc', cursor=None):
+    def get_txs(self, address='', start_cursor=0, order_by='desc', limit=10, token_tag='', action='', without_action=''):
+        params = {}
+        if start_cursor > 0:
+            params['cursor'] = start_cursor
+        if order_by:
+            params['order'] = order_by
+        if limit > 0:
+            params['count'] = limit
+        if token_tag != '':
+            params['tokenTag'] = token_tag
+        if action != '':
+            params['action'] = action
+        if without_action != '':
+            params['withoutAction'] = without_action
+        
         path = '/txs'
-        if account:
-            path = '/txs/%s' % account
-        if cursor:
-            path = '%s/?order=%s&cursor=%i' % (path, order, int(cursor))
-        else:
-            path = '%s/?order=%s' % (path, order)
+        if address != '':
+            path = '/txs/%s' % address
+        
         url = get_url(self.api_server, path)
-        return requests.get(url).json()
+        return requests.get(url, params=params).json()
 
     def get_tx(self, hash):
         path = '/tx/%s' % hash

@@ -3,8 +3,8 @@ from .transaction import Transaction
 from .client import Client
 
 class Account(Client):
-    def __init__(self, everpay_server_url, signer):
-        super().__init__(everpay_server_url)
+    def __init__(self, everpay_server_url, signer, timeout=2):
+        super().__init__(everpay_server_url, timeout)
         self.address = signer.address
         self.signer = signer
      
@@ -40,7 +40,7 @@ class Account(Client):
         if is_dry_run:
             return t
 
-        return t, t.post(self.api_server).content
+        return t, t.post(self.api_server, timeout=self.timeout).content
 
     def transfer(self, token_symbol_or_tag, to, amount, data='', is_dry_run=False):
         return self.send_tx('transfer', token_symbol_or_tag, to, amount, data, is_dry_run)

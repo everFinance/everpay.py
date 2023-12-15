@@ -3,7 +3,7 @@ from .utils import get_url, get_info, is_token_tag
 from .token import get_token_list
 
 class Client:
-    def __init__(self, everpay_server_url):
+    def __init__(self, everpay_server_url, timeout=2):
         if everpay_server_url.endswith('/'):
             everpay_server_url = everpay_server_url[:-1]
         self.api_server = everpay_server_url
@@ -13,6 +13,8 @@ class Client:
         self.eth_chain_id = self.info['ethChainID']
         self.fee_recipient = self.info['feeRecipient']
         self.symbol_to_tokens, self.tag_to_tokens = get_token_list(self.info)
+
+        self.timeout = timeout
         
     def get_info(self):
        return self.info
@@ -61,7 +63,7 @@ class Client:
         else:
             path = '/balances/%s' % account
         url = get_url(self.api_server, path)
-        return requests.get(url).json()
+        return requests.get(url, timeout=self.timeout).json()
 
     def get_txs(self, address='', start_cursor=0, order_by='desc', limit=10, token_tag='', action='', without_action=''):
         params = {}
@@ -83,9 +85,9 @@ class Client:
             path = '/txs/%s' % address
         
         url = get_url(self.api_server, path)
-        return requests.get(url, params=params).json()
+        return requests.get(url, params=params, timeout=self.timeout).json()
 
     def get_tx(self, hash):
         path = '/tx/%s' % hash
         url = get_url(self.api_server, path)
-        return requests.get(url).json()
+        return requests.get(url, timeout=self.timeout).json()

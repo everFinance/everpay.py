@@ -61,9 +61,9 @@ class Transaction:
             'sig': self.sig
         }
 
-    def post(self, api_host):
+    def post(self, api_host, timeout=2):
         url = api_host + '/tx'
         if not self.sig:
             raise Exception(self.tx_id, 'no signature.')
         #print('post_data:', self.to_dict())
-        return requests.post(url, json=self.to_dict())
+        return requests.post(url, json=self.to_dict(), timeout=timeout)

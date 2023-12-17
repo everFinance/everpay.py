@@ -7,7 +7,10 @@ class Account(Client):
         super().__init__(everpay_server_url, timeout)
         self.address = signer.address
         self.signer = signer
-     
+    
+    def set_signer(self, signer):
+        self.signer = signer
+
     def get_transfer_fee(self):
         return 0
 

@@ -9,6 +9,7 @@ class Account(Client):
         self.signer = signer
     
     def set_signer(self, signer):
+        self.address = signer.addres
         self.signer = signer
 
     def get_transfer_fee(self):

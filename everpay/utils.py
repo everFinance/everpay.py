@@ -37,10 +37,10 @@ def owner_to_address(owner):
     result = base64url_encode(hashlib.sha256(base64url_decode(owner.encode('ascii'))).digest()).decode()
     return result
 
-def get_info(info_url):
-    for i in range(3):
+def get_info(info_url, timeout=2):
+    for i in range(10):
         try:
-            return requests.get(info_url).json()
+            return requests.get(info_url, timeout=timeout).json()
         except:
             time.sleep(0.2)
             continue

@@ -9,7 +9,7 @@ class Client:
         self.api_server = everpay_server_url
 
         info_url = get_url(self.api_server, '/info')
-        self.info = get_info(info_url)
+        self.info = get_info(info_url, timeout=timeout)
         self.eth_chain_id = self.info['ethChainID']
         self.fee_recipient = self.info['feeRecipient']
         self.symbol_to_tokens, self.tag_to_tokens = get_token_list(self.info)

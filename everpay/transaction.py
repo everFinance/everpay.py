@@ -67,3 +67,7 @@ class Transaction:
             raise Exception(self.tx_id, 'no signature.')
         #print('post_data:', self.to_dict())
         return requests.post(url, json=self.to_dict(), timeout=timeout)
+
+def sign_tx(tx, signer):
+    tx.sig = signer.sign(str(tx))
+    return tx
